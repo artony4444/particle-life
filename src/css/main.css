@@ -1,0 +1,53 @@
+
+html, body
+{
+    margin: 0;
+    padding: 0;
+    background-color: #0d0d0d;
+}
+
+.screen
+{
+    width: 100vw;
+    height: 100vh;
+    
+    background-color: #0d0d0d;
+    color: #e5e5e5;
+    position: absolute;
+}
+
+.header
+{
+    margin: 10px;
+    text-align: center;
+}
+
+.canvas
+{
+    width: min(100vw, 100vh);
+    height: min(100vw, 100vh);
+    
+    outline: 1px solid grey;
+    outline-offset: -1px;
+    
+    touch-action: pinch-zoom;
+}
+
+.container
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.button
+{
+    min-width: 30px;
+    margin: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    
+    border-radius: 10px;
+    background-color: #d14534;
+    color: white;
+}
