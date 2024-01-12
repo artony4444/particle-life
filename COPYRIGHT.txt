@@ -1,0 +1,2 @@
+Copyright © Artony4444 2024
+Repository: https://github.com/artony4444/particle-life/
