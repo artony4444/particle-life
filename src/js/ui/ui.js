@@ -69,6 +69,7 @@ class ui
     drawParticle(p)
     {
         this.drawCircle(p.pos, p.color, p.mass*10)
+        // this.drawCircle(p.pos, "rgba(200,200,200,0.2)", p.mass*170)
     }
     
     clean()

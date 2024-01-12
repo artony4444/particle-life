@@ -6,7 +6,7 @@ class particle
         this.screen = screen
         this.pos = pos
         this.velo = {x:0, y:0}
-        this.mass = Math.random()*0.5+0.2 // Math.random()*0.3+0.2
+        this.mass = 0.4 // Math.random()*0.5+0.2 // Math.random()*0.3+0.2
         this.color = color
     }
     

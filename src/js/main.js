@@ -47,9 +47,15 @@ function click(event)
 
 function getRules()
 {
-    console.log(JSON.stringify(test.rules))
+    let rules = JSON.stringify(test.rules)
+    navigator.clipboard.writeText(rules)
+    console.log(rules)
 }
 
+function reload()
+{
+    test = new engine("container")
+}
 
 
 
