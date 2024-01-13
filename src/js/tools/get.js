@@ -19,4 +19,14 @@ class vars
 {
     static clean = 1; // 0 false | 1 true
     static fps = 60; // 10slow 1000fast
+    
+    static radius = 400;
+    static particleScale = 0.3;
+    static particleForceMid = 0.5;
+    static valocity = 0.5;
+    static noWall = true;
+    
+    static centerParticles = true;
+    static particleCount = 100
+    static particleColorCount = 4
 }

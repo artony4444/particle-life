@@ -1,4 +1,68 @@
 /*
+
+
+<div class="box">
+            <div class="card">
+                
+                <div class="cardHead">settings</div>
+                
+                <div class="divideSpace">
+                    radius 
+                    <input ontouchmove="vars.radius = this.value" id="radius" type="range" min="1" max="700" />
+                </div>
+                
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    particleScale 
+                    <input ontouchmove="vars.particleScale = this.value" id="particleScale" type="range" min="0" max="1" step="any" />
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    particleForceMid 
+                    <input ontouchmove="vars.particleForceMid = this.value" id="particleForceMid" type="range" min="0" max="1" step="any" />
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    valocity 
+                    <input ontouchmove="vars.valocity = this.value" id="valocity" type="range" min="0" max="1" step="any" />
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    noWall 
+                    <input onchange="vars.noWall = this.checked" id="noWall" type="checkbox" min="0" max="1"/>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    centerParticles 
+                    <input onchange="vars.centerParticles = this.checked" id="centerParticles" type="checkbox" min="0" max="1"/>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    particleCount 
+                    <input onchange="vars.particleCount = this.value" id="particleCount" type="number" min="1" max="1000" />
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="divideSpace">
+                    particleColorCount 
+                    <input onchange="vars.particleColorCount = this.value" id="particleColorCount" type="number" min="1" max="10" />
+                </div>
+                
+            </div>
+        </div>
         
                     let log = document.getElementById("log")
                     log.innerHTML = parseInt(log.innerHTML) +1
@@ -197,6 +261,15 @@
         // () splitcells --> [[-0.931095622610767,0.542100569968107,0.07338530275774957],[0.375033374897789,-0.7353994615993167,0.8038157143032514],[0.20617994419253804,-0.9892264869536405,0.15636213378198827]]
         
         // cute atom --> [[0.6326935996377578,0.40361372715894994,0.8192767012359541,-0.9182159146281297,0.0681835208802708,-0.7175238962310222],[0.06357267936029931,0.6186569661203389,-0.7340258610481105,0.08332071413088205,0.3283693815224984,-0.1140298081839708],[-0.44877729017252665,0.5356387974711025,0.552520815955992,0.9509618240984379,0.8416361405787911,0.7327665833614243],[0.9266530880030746,0.6799814667262813,0.7462046128585125,-0.19312252122553764,0.7491253383028829,0.9432850481001784],[0.1785470708435457,0.05481002608947172,-0.5783610007240698,-0.5801840953041353,-0.8421327877431786,0.06709043040613505],[-0.20396662384631314,-0.16058241762040337,-0.26234428492209316,-0.1216368028266328,-0.757998182451824,0.036890486427103575]]
+        
+        // ☆☆☆ oscillators --> 
+        
+        [[-0.7626315688653378,0.6989100914593647,-0.893948127964729,0.09575136811701546],[-0.8007567894455456,0.4076793509876371,0.7090896288182105,-0.5581669002988399],[0.8043453737417021,0.3423293732636705,-0.8001336262654073,0.21892170445680703],[-0.5623019360113037,0.5566366643045328,-0.35742695906797506,-0.8944967756929114]]
+        
+        [[0.39474223361614014,-0.5097661599793564,0.5419171540010956,-0.7051799610539233],[0.9738588596455231,-0.8034721014683059,-0.3352077746853852,-0.037757345377592344],[0.5634491202732157,0.7245215024180824,-0.19402946202888582,-0.8838902215506081],[-0.971566101226335,0.4663135323761538,0.5039519002410118,0.07868240879602428]]
+        
+        [[0.6691638378668578,-0.19578462556479304,0.8720081716674253,-0.9955128338252077],[-0.37449270569016857,-0.4914541080517254,0.9053437438954295,0.6587477686544561],[-0.24502342281419365,0.6235021308402056,-0.8903003619960157,0.6136434220824083],[0.2764461970784269,0.9171010484385418,-0.6455296321132065,-0.13849217586780016]]
+        
         
         let yellow = this.yellow;
         let red = this.red;

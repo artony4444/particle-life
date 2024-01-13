@@ -4,29 +4,17 @@ let test = new engine("container")
 
 let interval = setInterval(run, 1000/vars.fps);
 
+
 function run()
 {
     if(vars.clean) test.display.ui.clean();
     test.next();
 }
 
-function stop()
-{
-    clearInterval(interval);
-    window.close();
-}
-
-function start()
-{
-    test.start = true;
-}
-
 function log(str)
 {
     console.log(str);
 }
-
-
 
 function click(event) 
 {
@@ -58,6 +46,58 @@ function reload()
 }
 
 
+//https://medium.com/@amatewasu/how-to-record-a-canvas-element-d4d0826d3591
+
+let canvas = test.display.ui.can
+
+var videoStream = canvas.captureStream(60);
+var mediaRecorder = new MediaRecorder(videoStream);
+
+var chunks = [];
+mediaRecorder.ondataavailable = function(e) {
+  chunks.push(e.data);
+};
+
+mediaRecorder.onstop = function(e) {
+  var blob = new Blob(chunks, { 'type' : 'video/mp4' });
+  chunks = [];
+  var videoURL = URL.createObjectURL(blob);
+  
+  
+  const a = document.createElement('a');
+  a.style = "display: none;";
+  a.href = videoURL;
+  a.download = "video.mp4";
+  canvas.appendChild(a);
+  // Trigger the file download
+  a.click();
+};
+mediaRecorder.ondataavailable = function(e) {
+  chunks.push(e.data);
+};
+
+
+function startStopRec()
+{
+    let rec = document.getElementById("recordButton")
+    
+    if(mediaRecorder.state == "inactive")
+    {
+        mediaRecorder.start();
+        rec.innerHTML = "■ Stop";
+        rec.style.backgroundColor = "#ea584e";
+        
+        // log("started")
+    }
+    else
+    {
+        mediaRecorder.stop();
+        rec.innerHTML = "● Record";
+        rec.style.backgroundColor = "#ffffff31";
+        
+        // log("stoped")
+    }
+}
 
 
 

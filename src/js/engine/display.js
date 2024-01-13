@@ -22,7 +22,7 @@ class display
     
     randomPos()
     {
-        return this.randomMidPos()
+        if(vars.centerParticles) return this.randomMidPos()
         return { 
         x: Math.random() * this.size.width, 
         y: Math.random() * this.size.height }

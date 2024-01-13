@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Page title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="src/css/main.css">
     
@@ -12,14 +13,19 @@
     <div class="screen">
         
         <div class="header">SIMULATION</div>
-        <div id="container"></div>
         
-        <div class="container">
-            <div class="button" onclick="reload()">reload</div>
-            <div class="button" onclick="getRules()" style="background-color:green">rules</div>
+        <div class="flexRow">
+            
+            <div id="container"></div>
+            <div class="buttons">
+                <div class="button" onclick="startStopRec()" id="recordButton" style="background-color:#303030">● Record</div>
+                <div class="flexRow">
+                    <div class="button" onclick="reload()" style="">reload</div>
+                    <div class="button" onclick="getRules()" style="background-color:green">rules</div>
+                </div>
+            </div>
+            
         </div>
-        
-        <div id=log></div>
         
     </div>
     

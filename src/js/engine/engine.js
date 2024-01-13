@@ -27,8 +27,8 @@ class engine
     
     particleInit()
     {
-        let count = 100
-        this.createGroups(4, count);
+        let count = vars.particleCount
+        this.createGroups(vars.particleColorCount, count);
         this.rules = this.createRules()
         // this.rules = 
     }
@@ -98,7 +98,7 @@ class engine
     
     rule(par, par2, g)
     {
-        let noWall = true
+        let noWall = vars.noWall
         
         let width = this.display.size.width
         let height = this.display.size.height
@@ -115,7 +115,7 @@ class engine
                 
                 let b = {x: p2.pos.x, y: p2.pos.y}
                 
-                let limit = p2.mass * 400 // 200
+                let limit = p2.mass * vars.radius // 200
                 
                 if(noWall)
                 {
@@ -132,10 +132,10 @@ class engine
                 {
                     let fr = g * p2.mass
                     
-                    let size = limit*0.3 // (p2.mass + p.mass)*10/2
+                    let size = limit*vars.particleScale // (p2.mass + p.mass)*10/2
                     
                     let attrLen = limit - size
-                    let mid = 0.5
+                    let mid = vars.particleForceMid
                     let attrMid = attrLen*mid
                     let attrPos = dist - size
                     
@@ -165,7 +165,7 @@ class engine
             }
             
             let velo = get.addPos(p.velo, frc)
-            let mult = 0.5; velo.x *= mult; velo.y *= mult;
+            let mult = vars.valocity; velo.x *= mult; velo.y *= mult;
             let pos = get.addPos(p.pos, p.velo)
             
             if(noWall)
