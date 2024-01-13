@@ -42,7 +42,8 @@ function getRules()
 
 function reload()
 {
-    test = new engine("container")
+    // test = new engine("container")
+    location.reload();
 }
 
 
