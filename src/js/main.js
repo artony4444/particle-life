@@ -44,6 +44,7 @@ function reload()
 {
     // test = new engine("container")
     location.reload();
+    chunks = [];
 }
 
 
