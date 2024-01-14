@@ -18,15 +18,16 @@ class get
 class vars
 {
     static clean = 1; // 0 false | 1 true
-    static fps = 60; // 10slow 1000fast
+    static fps = 60;
     
     static radius = 400;
     static particleScale = 0.3;
     static particleForceMid = 0.5;
     static valocity = 0.5;
-    static noWall = true;
+    static noWall = false; // fps drop (need to optimize)
     
     static centerParticles = true;
-    static particleCount = 100
-    static particleColorCount = 4
+    static totalParticle = 400
+    static particleColorCount = 6
+    static particleCount = parseInt(this.totalParticle/this.particleColorCount)
 }
