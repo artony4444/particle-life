@@ -52,7 +52,7 @@ function reload()
 
 let canvas = test.display.ui.can
 
-var videoStream = canvas.captureStream(60);
+var videoStream = canvas.captureStream(30);
 var mediaRecorder = new MediaRecorder(videoStream);
 
 var chunks = [];
