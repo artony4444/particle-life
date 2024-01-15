@@ -14,28 +14,21 @@ class engine
         this.particleInit()
     }
     
-    next()
-    {
-        this.update()
-        this.display.draw()
-    }
-    
-    update()
-    {
-        this.applyPhysics()
-    }
-    
     particleInit()
     {
-        let colors = vars.particleColorCount
-        let count = vars.particleCount
-        this.createGroups(colors, count);
+        let num = vars.particleColorCount
+        let len = vars.particleCount
         
         this.rules = {
-            size : colors,
-            mass : this.createMasses(),
-            force : this.createForces()
+            colorCount : num,
+            colors: this.createColors(num),
+            mass : this.createMasses(num),
+            force : this.createForces(num)
         }
+        
+        // this.rules =  
+        
+        this.createGroups(this.rules.colorCount, len)
     }
     
     createGroups(num, size)
@@ -44,12 +37,16 @@ class engine
         let created = []
         for(let a = 0; num > a; a++)
         {
-            created.push(this.createParticles(size, this.randomColor()))
+            created.push(this.createParticles(size, this.randomColor() ))
         }
+        
+        this.applyMasses()
+        this.applyColors()
+        
         return created
     }
     
-    createParticles(n, color="black")
+    createParticles(n, color="white")
     {
         let created = []
         for(let a = 0; n > a; a++)
@@ -61,34 +58,52 @@ class engine
         return created
     }
     
-    createMasses()
+    createColors(len)
+    {
+        let colors = []
+        for(let a = 0; a < len; a++)
+        {
+            colors.push(this.randomColor())
+        }
+        return colors
+    }
+    
+    applyColors()
+    {
+        let colors = this.rules.colors
+        this.particles.forEach((arr, i) => arr.forEach(p => {p.color = colors[i]} ))
+    }
+    
+    createMasses(len)
     {
         let mass = []
         let minMass = 0.2
         let maxMass = 0.7
-        let rMass = maxMass - minMass;
-        let len = this.particles.length
+        let rMass = maxMass - minMass
         
         for(let a = 0; a < len; a++)
         {
             mass.push(Math.random()*rMass+minMass)
         }
-        // apply mass
-        this.particles.forEach((arr, i) => arr.forEach(p => {p.mass = mass[i]} ))
         return mass
     }
     
-    createForces()
+    applyMasses()
     {
-        let part = this.particles
+        let mass = this.rules.mass
+        this.particles.forEach((arr, i) => arr.forEach(p => {p.mass = mass[i]} ))
+    }
+    
+    createForces(size)
+    {
         let forces = [];
         let force = 2 * 1
         
-        for(let p in part)
+        for(let p = 0; p < size; p++)
         {
             forces[p] = [];
             
-            for(let p2 in part)
+            for(let p2 = 0; p2 < size; p2++)
             {
                 forces[p].push(Math.random()*force-force/2)
             }
@@ -109,8 +124,14 @@ class engine
             }
         }
     }
+        
+    next() // call from main.js
+    {
+        this.update()
+        this.display.draw()
+    }
     
-    applyPhysics()
+    update()
     {
         this.applyForces()
     }
@@ -215,9 +236,9 @@ class engine
     
     randomColor()
     {
-        let r = Math.random()*200 + 50
-        let g = Math.random()*200 + 50
-        let b = Math.random()*200 + 50
+        let r = parseInt(Math.random()*200 + 50)
+        let g = parseInt(Math.random()*200 + 50)
+        let b = parseInt(Math.random()*200 + 50)
         
         return "rgb("+r+", "+g+", "+b+")"
     }

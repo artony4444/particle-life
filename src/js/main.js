@@ -35,7 +35,7 @@ function click(event)
 
 function getRules()
 {
-    let rules = JSON.stringify(test.rules)
+    let rules = JSON.stringify(test.rules, null, 0)
     navigator.clipboard.writeText(rules)
     console.log(rules)
 }
