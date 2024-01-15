@@ -27,15 +27,20 @@ class engine
     
     particleInit()
     {
+        let colors = vars.particleColorCount
         let count = vars.particleCount
-        this.createGroups(vars.particleColorCount, count);
-        this.rules = this.createRules()
-        // this.rules = [[0.2036769408457033,0.9898788393481217,-0.04979607740020464,0.8151489340329898,-0.22318364438075733,0.7067149442650034],[-0.8622773506370343,-0.16487011202600366,0.2763383016949219,-0.39724838304358867,-0.8814852523394121,-0.9663600267231907],[-0.4779788761343524,-0.9018475319620647,0.47748326079398495,-0.8262732851340386,-0.3981230499607742,-0.10930582023670832],[-0.03873341902046645,-0.31744876659151133,-0.718049995361183,0.16708848453789615,0.3428669841370544,0.886567154528282],[0.1608564388544096,-0.08440039970598123,-0.06847844403537318,0.8030419096042727,0.4609558982441575,-0.0338310837913256],[0.6944575535905297,0.835697719539517,0.33970441797530704,0.275073977852863,0.24622764418961385,-0.3302563642654057]]
+        this.createGroups(colors, count);
         
+        this.rules = {
+            size : colors,
+            mass : this.createMasses(),
+            force : this.createForces()
+        }
     }
     
     createGroups(num, size)
     {
+        this.particles = []
         let created = []
         for(let a = 0; num > a; a++)
         {
@@ -52,51 +57,62 @@ class engine
             created.push(
             new particle(this.display, this.display.randomPos(), color ))
         }
-        
-        /**/ let mass = Math.random()*0.5+0.2 
-        /**/ created.forEach(p => p.mass = mass)
-        
         this.particles.push(created)
         return created
     }
     
-    createRules()
+    createMasses()
+    {
+        let mass = []
+        let minMass = 0.2
+        let maxMass = 0.7
+        let rMass = maxMass - minMass;
+        let len = this.particles.length
+        
+        for(let a = 0; a < len; a++)
+        {
+            mass.push(Math.random()*rMass+minMass)
+        }
+        // apply mass
+        this.particles.forEach((arr, i) => arr.forEach(p => {p.mass = mass[i]} ))
+        return mass
+    }
+    
+    createForces()
     {
         let part = this.particles
-        let rules = [];
-        this.force = 2*1
-        let force = this.force
+        let forces = [];
+        let force = 2 * 1
         
         for(let p in part)
         {
-            rules[p] = [];
+            forces[p] = [];
             
             for(let p2 in part)
             {
-                rules[p].push(Math.random()*force-force/2)
+                forces[p].push(Math.random()*force-force/2)
             }
         }
-        return rules;
+        return forces;
     }
     
-    applyRules()
+    applyForces()
     {
         let part = this.particles
-        let rls = this.rules
+        let force = this.rules.force
         
         for(let p in part)
         {
             for(let p2 in part)
             {
-                this.rule(part[p], part[p2], rls[p][p2])
+                this.rule(part[p], part[p2], force[p][p2])
             }
         }
     }
     
     applyPhysics()
     {
-        this.applyRules()
-        // this.rule(this.particles[0], this.particles[0], -1)
+        this.applyForces()
     }
     
     rule(par, par2, g)
