@@ -28,6 +28,7 @@ class engine
         
         // this.rules =  
         
+        
         this.createGroups(this.rules.colorCount, len)
     }
     

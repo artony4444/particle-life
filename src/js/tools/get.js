@@ -24,7 +24,7 @@ class vars
     static particleScale = 0.3;
     static particleForceMid = 0.5;
     static valocity = 0.5;
-    static noWall = false; // fps drop (need to optimize)
+    static noWall = true; // fps drop (need to optimize)
     
     static centerParticles = true;
     static totalParticle = 400
