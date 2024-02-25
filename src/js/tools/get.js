@@ -19,6 +19,7 @@ class vars
 {
     static clean = 1; // 0 false | 1 true
     static fps = 60;
+    static displaySize = 1080;
     
     static radius = 170;
     static particleScale = 0.3;

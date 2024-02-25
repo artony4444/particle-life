@@ -4,7 +4,7 @@ class display
 {
     constructor(containerID, engine)
     {
-        this.size = { width:1080, height:1080 }
+        this.size = { width:vars.displaySize, height:vars.displaySize }
         this.ui = new ui(this, containerID, this.size)
         this.engine = engine
     }

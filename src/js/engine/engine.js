@@ -237,10 +237,16 @@ class engine
     
     randomColor()
     {
-        let r = parseInt(Math.random()*200 + 50)
-        let g = parseInt(Math.random()*200 + 50)
-        let b = parseInt(Math.random()*200 + 50)
+        let r = random()
+        let g = random()
+        let b = random()
         
         return "rgb("+r+", "+g+", "+b+")"
+        
+        function random()
+        {
+            let brightness = 100;
+            return parseInt(Math.random()*(255-brightness)+brightness);
+        }
     }
 }
