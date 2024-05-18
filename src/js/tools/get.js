@@ -29,7 +29,7 @@ class vars
     
     static radius = 100;
     static valocity = 0.9;
-    static noWall = false; // fps drop (need to optimize)
+    static noWall = true; // fps drop (need to optimize)
     
     static centerParticles = true;
     static totalParticle = 1000
