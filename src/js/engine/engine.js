@@ -5,7 +5,6 @@ class engine
     constructor(containerID)
     {
         this.display = new display(containerID, this)
-        this.particles = [] // 2d array
         this.vars()
     }
     
@@ -16,101 +15,54 @@ class engine
     
     particleInit()
     {
+        this.particles = [] // 2d array
+        
         let num = vars.particleColorCount
         let len = vars.particleCount
+        let dim = [num, len];
         
         this.rules = {
-            colorCount : num,
-            colors: this.createColors(num),
-            mass : this.createMasses(num),
-            force : this.createForces(num)
+            colors :  this.randomColor(dim),
+            mass   :  this.randomMass(dim), // .map((arr, i) => i==0 ? [20] : arr),
+            force  :  this.randomForce([num, num]), // .map((arr,i) => i==0 ? arr.fill(0) : arr)
         }
         
-        // this.rules =  
+        // this.rules = 
         
+        this.createGroups(dim)
+    }
+    
+    randomColor(dim)      { return this.createArray(dim[0], get.randomColor) }
+    randomMass(dim)       { let scale = 0.5; let min =  3*scale; let max = 7*scale; return this.createArray(dim[0], Math.random).map(n => n * (max-min) + min) }
+    randomForce(dim)      { let scale = 1; let min = scale * -1; let max = scale; return this.create2dArray(dim, Math.random).map(arr => arr.map(n => n * (max-min) + min)) }
+    
+    createGroups(dim)
+    {
+        this.particles = new Array(dim[0]).fill(0).map(e => new Array(dim[1]).fill(0).map(e2 =>
+                new particle(this.display, this.display.randomPos())
+            ))
         
-        this.createGroups(this.rules.colorCount, len)
+        this.applyChanges("mass", this.rules.mass, true)
+        this.applyChanges("color", this.rules.colors, true)
     }
     
-    createGroups(num, size)
+    createArray(lem, func) { return new Array(lem).fill(0).map(e => func() ) }
+    
+    create2dArray(dim, func)
     {
-        this.particles = []
-        let created = []
-        for(let a = 0; num > a; a++)
-        {
-            created.push(this.createParticles(size, this.randomColor() ))
-        }
-        
-        this.applyMasses()
-        this.applyColors()
-        
-        return created
+        return new Array(dim[0]).fill(0).map(e => 
+            new Array(dim[1]).fill(0).map(e2 => 
+                func()
+            )
+        )
     }
     
-    createParticles(n, color="white")
+    applyChanges(element, val, groupChanges=false)
     {
-        let created = []
-        for(let a = 0; n > a; a++)
-        {
-            created.push(
-            new particle(this.display, this.display.randomPos(), color ))
-        }
-        this.particles.push(created)
-        return created
+        if(groupChanges) this.particles.forEach((arr, i) => arr.forEach((p, i2) => {p[element] = val[i]} ))
+        else this.particles.forEach((arr, i) => arr.forEach((p, i2) => {p[element] = val[i][i2]} ))
     }
     
-    createColors(len)
-    {
-        let colors = []
-        for(let a = 0; a < len; a++)
-        {
-            colors.push(this.randomColor())
-        }
-        return colors
-    }
-    
-    applyColors()
-    {
-        let colors = this.rules.colors
-        this.particles.forEach((arr, i) => arr.forEach(p => {p.color = colors[i]} ))
-    }
-    
-    createMasses(len)
-    {
-        let mass = []
-        let minMass = 0.2
-        let maxMass = 0.7
-        let rMass = maxMass - minMass
-        
-        for(let a = 0; a < len; a++)
-        {
-            mass.push(Math.random()*rMass+minMass)
-        }
-        return mass
-    }
-    
-    applyMasses()
-    {
-        let mass = this.rules.mass
-        this.particles.forEach((arr, i) => arr.forEach(p => {p.mass = mass[i]} ))
-    }
-    
-    createForces(size)
-    {
-        let forces = [];
-        let force = 2 * 1
-        
-        for(let p = 0; p < size; p++)
-        {
-            forces[p] = [];
-            
-            for(let p2 = 0; p2 < size; p2++)
-            {
-                forces[p].push(Math.random()*force-force/2)
-            }
-        }
-        return forces;
-    }
     
     applyForces()
     {
@@ -121,7 +73,7 @@ class engine
         {
             for(let p2 in part)
             {
-                this.rule(part[p], part[p2], force[p][p2])
+                this.rule(part[p], part[p2], force[p][p2]/**/)
             }
         }
     }
@@ -139,6 +91,7 @@ class engine
     
     rule(par, par2, g)
     {
+        // g = 0.5; // Math.random()*6.674;
         let noWall = vars.noWall
         
         let width = this.display.size.width
@@ -160,6 +113,7 @@ class engine
                 
                 if(noWall)
                 {
+                    limit = 500
                     if(a.x > width - limit && b.x < limit) { b.x += width }
                     else if(a.x < limit && b.x > width - limit) { b.x -= width }
                     if(a.y > height - limit && b.y < limit) { b.y += height }
@@ -169,40 +123,27 @@ class engine
                 let d = {x: (b.x-a.x), y: (b.y-a.y)}
                 let dist = Math.sqrt(d.x**2 + d.y**2)
                 
-                if(dist >= 0 && dist <= limit)
+                // GRAVITY CODE 
+                
+                // if(dist < p2.mass*10) continue; // (1 / .5 = 2)
+                
+                if(dist < limit)
                 {
-                    let fr = g * p2.mass
+                    let fr = (g * p2.mass * p.mass) / dist**2
                     
-                    let size = limit*vars.particleScale // (p2.mass + p.mass)*10/2
-                    
-                    let attrLen = limit - size
-                    let mid = vars.particleForceMid
-                    let attrMid = attrLen*mid
-                    let attrPos = dist - size
-                    
-                    let attraction = 0
-                    let repulstion = 1-(dist/size)
-                    
-                    if(attrPos <= attrMid)
+                    /* collision */ let scale = this.display.ui.uiScale*4; let collisionD = p2.mass*scale+p.mass*scale;
+                    if(dist <= collisionD)
                     {
-                        attraction = attrPos/attrMid
+                        fr *= fr < 0 ? 1 : -1;
                     }
-                    else if(attrPos > attrMid)
-                    {
-                        attraction = 1-(attrPos-attrMid)/(limit-attrMid) // 1−((12−10)÷(20−10))
-                    }
-                    if(attraction == "-Infinity") attraction = 0;
-                    if(fr > 0) repulstion *= -1
+                    // fr = fr * (dist/limit)
                     
-                    attraction *= 1
-                    repulstion *= 1
-                    
-                    if(dist <= size) {frc.x += fr * repulstion * (d.x/dist) / p.mass}
-                    else             {frc.x += fr * attraction * (d.x/dist) / p.mass}
-                    if(dist <= size) {frc.y += fr * repulstion * (d.y/dist) / p.mass}
-                    else             {frc.y += fr * attraction * (d.y/dist) / p.mass}
+                    frc.x += (fr * d.x) / p.mass
+                    frc.y += (fr * d.y) / p.mass
                     
                 }
+                
+                // END OF GRAVITY CODE
             }
             
             let velo = get.addPos(p.velo, frc)
@@ -229,24 +170,9 @@ class engine
             
             if(!(noWall)) // wall repultion
             {
-                if(p.pos.x <= 0 || p.pos.x >= width){p.velo.x *= -1}
-                if(p.pos.y <= 0 || p.pos.y >= height){p.velo.y *= -1}
+                if(p.pos.x <= 0 || p.pos.x >= width){p.velo.x *= -0.5}
+                if(p.pos.y <= 0 || p.pos.y >= height){p.velo.y *= -0.5}
             }
-        }
-    }
-    
-    randomColor()
-    {
-        let r = random()
-        let g = random()
-        let b = random()
-        
-        return "rgb("+r+", "+g+", "+b+")"
-        
-        function random()
-        {
-            let brightness = 100;
-            return parseInt(Math.random()*(255-brightness)+brightness);
         }
     }
 }

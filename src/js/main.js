@@ -1,9 +1,7 @@
 
-
 let test = new engine("container")
 
 let interval = setInterval(run, 1000/vars.fps);
-
 
 function run()
 {
