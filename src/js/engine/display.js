@@ -21,7 +21,7 @@ class display
         if(pos.x >= 0 && pos.x < this.size.width && pos.y >= 0 && pos.y < this.size.height) return false; else return true
     }
     
-    randomPos(s=this.size.width/100)
+    randomPos(s=this.size.width/10)
     {
         if(vars.centerParticles) return this.randomMidPos(s)
         return { 
